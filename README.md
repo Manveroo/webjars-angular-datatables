@@ -36,6 +36,7 @@ Complete example
 
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/datatables/1.10.1/js/jquery.dataTables.min.js"></script>
+<script src="/webjars/angularjs/1.2.6/angular.min.js"></script>
 <!-- needs to be included AFTER jQuery and Datatables -->
 <script src="/webjars/angular-datatables/0.0.3/angular-datatables.min.js"></script>
 ```
