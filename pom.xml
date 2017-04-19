@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,24 +11,25 @@
 
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
-    <artifactId>angular-datatables</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
-    <name>angular-datatables</name>
-    <description>WebJar for angular-datatables</description>
+    <artifactId>angularjs-slider</artifactId>
+    <version>6.1.1-SNAPSHOT</version>
+    <name>angularjs-slider</name>
+    <description>WebJar for angularjs-slider</description>
     <url>http://webjars.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upstream.version>0.1.0</upstream.version>
-        <upstream.url>http://github.com/l-lin/angular-datatables/archive</upstream.url>
-        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstream.version}</destDir>
+        <!--<upstream.version>6.1.1</upstream.version>-->
+        <upstream.url>https://github.com/angular-slider/angularjs-slider/archive/${version.unsnapshot}.zip</upstream.url>
+        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}
+        </destDir>
         <requirejs>
             {
                 "paths": {
-                    "angular-datatables": "angular-datatables"
+                    "angularjs-slider": "rzslider"
                 },
                 "shim": {
-                    "angular-datatables": ["jquery","datatables","angular"]
+                    "angularjs-slider": ["angular"]
                 }
             }
         </requirejs>
@@ -35,80 +37,72 @@
 
     <developers>
         <developer>
-            <id>jeanlouisboudart</id>
-            <name>Jean-Louis Boudart</name>
-            <email>jeanlouis.boudart@gmail.com</email>
+            <id>Manveroo</id>
+            <name>Manveroo</name>
+            <email>cwdrspam-github@yahoo.de</email>
         </developer>
     </developers>
 
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <name>MIT</name>
+            <url>https://github.com/angular-slider/angularjs-slider/blob/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <scm>
-        <url>http://github.com/webjars/angular-datatables</url>
-        <connection>scm:git:https://github.com/webjars/angular-datatables.git</connection>
-        <developerConnection>scm:git:https://github.com/webjars/angular-datatables.git</developerConnection>
+        <url>http://github.com/webjars/angularjs-slider</url>
+        <connection>scm:git:https://github.com/webjars/angularjs-slider.git</connection>
+        <developerConnection>scm:git:https://github.com/webjars/angularjs-slider.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <dependencies>
         <dependency>
             <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>1.11.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>datatables</artifactId>
-            <version>1.10.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
             <artifactId>angularjs</artifactId>
-            <version>1.2.6</version>
+            <version>1.4.3</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0-beta-5</version>
+                <groupId>com.jamesward</groupId>
+                <artifactId>unsnapshot-maven-plugin</artifactId>
+                <version>0.2</version>
                 <executions>
                     <execution>
-                        <phase>process-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
-                            <goal>download-single</goal>
+                            <goal>unsnapshot</goal>
                         </goals>
-                        <configuration>
-                            <url>${upstream.url}</url>
-                            <fromFile>v${upstream.version}.zip</fromFile>
-                            <toFile>${project.build.directory}/${project.artifactId}.zip</toFile>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
+                <version>1.8</version>
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
-                        <goals><goal>run</goal></goals>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                         <configuration>
                             <target>
-                                <echo message="unzip archive" />
-                                <unzip src="${project.build.directory}/${project.artifactId}.zip" dest="${project.build.directory}" />
-                                <echo message="moving resources" />
+                                <echo message="download archive"/>
+                                <get src="${upstream.url}" dest="${project.build.directory}/${project.artifactId}.zip"/>
+                                <echo message="unzip archive"/>
+                                <unzip src="${project.build.directory}/${project.artifactId}.zip"
+                                       dest="${project.build.directory}"/>
+                                <echo message="moving resources"/>
                                 <move todir="${destDir}">
-                                    <fileset dir="${project.build.directory}/${project.artifactId}-${upstream.version}/dist" />
+                                    <fileset
+                                            dir="${project.build.directory}/${project.artifactId}-${version.unsnapshot}/dist"/>
                                 </move>
                             </target>
                         </configuration>
@@ -119,13 +113,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.5.3</version>
             </plugin>
 
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.5.1</version>
+                <version>1.6.8</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>sonatype-nexus-staging</serverId>
